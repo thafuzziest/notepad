@@ -1,1 +1,3 @@
-a defer statement pushes a function onto a call stack. the list of saved calls is executed after the surrounding function returns. so don't call defer in an infinite loop because those calls will never get made.
+a defer statement pushes a function onto a call stack. the list of saved calls
+is executed after the surrounding function returns. so don't call defer in an
+infinite loop because those calls will never get made.
