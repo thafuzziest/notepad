@@ -1,0 +1,63 @@
+go has 2 packages that perform automated testing.
+
+testing httptest
+
+the testing package is used with the "go test" command. each go source file
+should have an associated _test.go file that contains all the tests you want to
+run on the go source file. for example, if you have app.go, you should also have
+app_test.go. in the app_test.go file you create functions in the format:
+
+func TestXxx(*testing.T) { }
+
+where Xxx is an alphanumeric string with the first letter capitalized.
+
+example:
+
+$ cat dog.go package main
+
+import (
+  "fmt"
+)
+
+func bark() string {
+  return "woof"
+}
+
+func main() {
+  fmt.Printf("the dog says %s!\n", bark())
+}
+
+$ cat dog_test.go package main
+
+import (
+  "fmt" "testing"
+)
+
+func TestBark(t *testing.T) {
+  bark := bark() if bark != "woof" {
+    t.Error(fmt.Sprintf("test failed. expected 'woof', got %s", bark))
+  }
+}
+
+$ go test PASS ok      demo    0.004s
+
+now modify the bark() function to return something other than "woof":
+
+$ cat dog.go package main
+
+import (
+  "fmt"
+)
+
+func bark() string {
+  return "meow"
+}
+
+func main() {
+  fmt.Printf("the dog says %s!\n", bark())
+}
+
+$ go test --- FAIL: TestBark (0.00s)
+    dog_test.go:11: test failed. expected 'woof', got meow
+FAIL exit status 1 FAIL    demo    0.004s
+
