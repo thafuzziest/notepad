@@ -27,10 +27,12 @@ func main() {
   fmt.Printf("the dog says %s!\n", bark())
 }
 
-$ cat dog_test.go package main
+$ cat dog_test.go
+package main
 
 import (
-  "fmt" "testing"
+  "fmt"
+  "testing"
 )
 
 func TestBark(t *testing.T) {
