@@ -1,6 +1,7 @@
 go has 2 packages that perform automated testing.
 
-testing httptest
+testing
+testing/httptest
 
 the testing package is used with the "go test" command. each go source file
 should have an associated _test.go file that contains all the tests you want to
@@ -45,7 +46,8 @@ $ go test PASS ok      demo    0.004s
 
 now modify the bark() function to return something other than "woof":
 
-$ cat dog.go package main
+$ cat dog.go
+package main
 
 import (
   "fmt"
@@ -73,4 +75,37 @@ FAIL
 coverage: 50.0% of statements
 exit status 1
 FAIL	demo	0.004s
+
+you can also benchmark code using:
+
+func BenchmarkXxx(*testing.B) { }
+
+$ cat dog_test.go 
+package main
+
+import (
+  "fmt"
+  "testing"
+)
+
+func TestBark(t *testing.T) {
+  bark := bark()
+  if bark != "woof" {
+    t.Error(fmt.Sprintf("test failed. expected 'woof', got %s", bark))
+  }
+}
+
+func BenchmarkBark(b *testing.B) {
+  for i := 0; i < b.N; i++ {
+    bark()
+  }
+}
+
+$ go test -bench .
+goos: darwin
+goarch: amd64
+pkg: demo
+BenchmarkBark-4   	2000000000	         0.41 ns/op
+PASS
+ok  	demo	0.870s
 
